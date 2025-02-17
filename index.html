@@ -19,6 +19,15 @@
 
   <canvas id="revenueProfitChart" width="400" height="200"></canvas>
 
+  <h3>Updated License Prices</h3>
+  <p>Price (Type 1): <span id="priceType1Display">104.43</span></p>
+  <p>Price (Type 2): <span id="priceType2Display">48.73</span></p>
+
+  <!-- New section for displaying calculated results -->
+  <h3>Calculated Results</h3>
+  <p>Total Revenue: <span id="totalRevenueDisplay">0.00</span> USD</p>
+  <p>Profit: <span id="profitDisplay">0.00</span> USD</p>
+
   <script>
     const initialData = {
       licensesSoldType1: 630,
@@ -30,7 +39,6 @@
     };
 
     function calculateProfit(newCostType1, newCostType2) {
-      // Calculate the price based on the new cost relative to the initial cost
       const newPriceType1 = initialData.initialPriceType1 * (newCostType1 / initialData.initialCostType1);
       const newPriceType2 = initialData.initialPriceType2 * (newCostType2 / initialData.initialCostType2);
 
@@ -63,7 +71,9 @@
             y: {
               beginAtZero: true
             }
-          }
+          },
+          // Make the bars thinner
+          barThickness: 30
         }
       });
     }
@@ -76,6 +86,8 @@
 
       document.getElementById('priceType1Display').innerText = newPriceType1.toFixed(2);
       document.getElementById('priceType2Display').innerText = newPriceType2.toFixed(2);
+      document.getElementById('totalRevenueDisplay').innerText = totalRevenue.toFixed(2);
+      document.getElementById('profitDisplay').innerText = profit.toFixed(2);
 
       chart.data.datasets[0].data = [totalRevenue, profit];
       chart.update();
@@ -85,9 +97,5 @@
     const { totalRevenue, profit } = calculateProfit(72.12, 33.66);
     createChart(totalRevenue, profit);
   </script>
-
-  <h3>Updated License Prices</h3>
-  <p>Price (Type 1): <span id="priceType1Display">104.43</span></p>
-  <p>Price (Type 2): <span id="priceType2Display">48.73</span></p>
 </body>
 </html>

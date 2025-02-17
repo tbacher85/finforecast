@@ -8,7 +8,21 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+
+    .app-container {
+      background-color: #ffffff;
       padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      text-align: center;
     }
 
     h2, h3 {
@@ -18,6 +32,7 @@
     label {
       display: block;
       margin: 10px 0 5px;
+      text-align: left;
     }
 
     input {
@@ -42,48 +57,42 @@
       background-color: #0055aa;
     }
 
-    .container {
-      max-width: 400px;
-      margin-bottom: 20px;
-    }
-
     canvas {
-      max-width: 400px;
+      max-width: 100%;
       margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h2>License Cost Impact on Revenue and Profit</h2>
+  <div class="app-container">
+    <h2>License Cost Impact on Revenue and Profit</h2>
 
-  <div class="container">
-    <!-- Cost Inputs -->
-    <label for="costType1">New License Cost (Type 1): </label>
-    <input type="number" id="costType1" value="72.12" step="0.01">
+    <div class="container">
+      <label for="costType1">New License Cost (Type 1): </label>
+      <input type="number" id="costType1" value="72.12" step="0.01">
 
-    <label for="costType2">New License Cost (Type 2): </label>
-    <input type="number" id="costType2" value="33.66" step="0.01">
+      <label for="costType2">New License Cost (Type 2): </label>
+      <input type="number" id="costType2" value="33.66" step="0.01">
 
-    <!-- New License Sold Inputs -->
-    <label for="licensesType1">Number of Licenses Sold (Type 1): </label>
-    <input type="number" id="licensesType1" value="630">
+      <label for="licensesType1">Number of Licenses Sold (Type 1): </label>
+      <input type="number" id="licensesType1" value="630">
 
-    <label for="licensesType2">Number of Licenses Sold (Type 2): </label>
-    <input type="number" id="licensesType2" value="91">
+      <label for="licensesType2">Number of Licenses Sold (Type 2): </label>
+      <input type="number" id="licensesType2" value="91">
 
-    <button onclick="updateChart()">Update Chart</button>
+      <button onclick="updateChart()">Update Chart</button>
+    </div>
+
+    <canvas id="revenueProfitChart" width="400" height="200"></canvas>
+
+    <h3>Updated License Prices</h3>
+    <p>Price (Type 1): <span id="priceType1Display">104.43</span></p>
+    <p>Price (Type 2): <span id="priceType2Display">48.73</span></p>
+
+    <h3>Calculated Results</h3>
+    <p>Total Revenue: <span id="totalRevenueDisplay">0.00</span> USD</p>
+    <p>Profit: <span id="profitDisplay">0.00</span> USD</p>
   </div>
-
-  <canvas id="revenueProfitChart" width="400" height="200"></canvas>
-
-  <h3>Updated License Prices</h3>
-  <p>Price (Type 1): <span id="priceType1Display">104.43</span></p>
-  <p>Price (Type 2): <span id="priceType2Display">48.73</span></p>
-
-  <!-- New section for displaying calculated results -->
-  <h3>Calculated Results</h3>
-  <p>Total Revenue: <span id="totalRevenueDisplay">0.00</span> USD</p>
-  <p>Profit: <span id="profitDisplay">0.00</span> USD</p>
 
   <script>
     // Initial data
@@ -146,13 +155,11 @@
         newCostType1, newCostType2, licensesSoldType1, licensesSoldType2
       );
 
-      // Update displayed prices and results
       document.getElementById('priceType1Display').innerText = newPriceType1.toFixed(2);
       document.getElementById('priceType2Display').innerText = newPriceType2.toFixed(2);
       document.getElementById('totalRevenueDisplay').innerText = totalRevenue.toFixed(2);
       document.getElementById('profitDisplay').innerText = profit.toFixed(2);
 
-      // Update chart data
       chart.data.datasets[0].data = [totalRevenue, profit];
       chart.update();
     }

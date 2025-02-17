@@ -3,17 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic License Cost Chart</title>
+  <title>License Cost Impact on Revenue and Profit</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h2>License Cost Impact on Revenue and Profit</h2>
 
+  <!-- Cost Inputs -->
   <label for="costType1">New License Cost (Type 1): </label>
   <input type="number" id="costType1" value="72.12" step="0.01">
 
   <label for="costType2">New License Cost (Type 2): </label>
   <input type="number" id="costType2" value="33.66" step="0.01">
+
+  <!-- New License Sold Inputs -->
+  <label for="licensesType1">Number of Licenses Sold (Type 1): </label>
+  <input type="number" id="licensesType1" value="630">
+
+  <label for="licensesType2">Number of Licenses Sold (Type 2): </label>
+  <input type="number" id="licensesType2" value="91">
 
   <button onclick="updateChart()">Update Chart</button>
 
@@ -29,29 +37,30 @@
   <p>Profit: <span id="profitDisplay">0.00</span> USD</p>
 
   <script>
+    // Initial data
     const initialData = {
-      licensesSoldType1: 630,
-      licensesSoldType2: 91,
       initialPriceType1: 104.43,
       initialPriceType2: 48.73,
       initialCostType1: 72.12,
       initialCostType2: 33.66
     };
 
-    function calculateProfit(newCostType1, newCostType2) {
+    // Function to calculate new prices, revenue, and profit
+    function calculateProfit(newCostType1, newCostType2, licensesSoldType1, licensesSoldType2) {
       const newPriceType1 = initialData.initialPriceType1 * (newCostType1 / initialData.initialCostType1);
       const newPriceType2 = initialData.initialPriceType2 * (newCostType2 / initialData.initialCostType2);
 
-      const revenueType1 = initialData.licensesSoldType1 * newPriceType1;
-      const revenueType2 = initialData.licensesSoldType2 * newPriceType2;
+      const revenueType1 = licensesSoldType1 * newPriceType1;
+      const revenueType2 = licensesSoldType2 * newPriceType2;
       const totalRevenue = revenueType1 + revenueType2;
 
-      const totalCost = (initialData.licensesSoldType1 * newCostType1) + (initialData.licensesSoldType2 * newCostType2);
+      const totalCost = (licensesSoldType1 * newCostType1) + (licensesSoldType2 * newCostType2);
       const profit = totalRevenue - totalCost;
 
       return { totalRevenue, profit, newPriceType1, newPriceType2 };
     }
 
+    // Create the initial chart
     const ctx = document.getElementById('revenueProfitChart').getContext('2d');
     let chart;
 
@@ -72,29 +81,35 @@
               beginAtZero: true
             }
           },
-          // Make the bars thinner
-          barThickness: 30
+          barPercentage: 0.5 // Thinner bars
         }
       });
     }
 
+    // Update chart and displayed results
     function updateChart() {
       const newCostType1 = parseFloat(document.getElementById('costType1').value);
       const newCostType2 = parseFloat(document.getElementById('costType2').value);
+      const licensesSoldType1 = parseInt(document.getElementById('licensesType1').value);
+      const licensesSoldType2 = parseInt(document.getElementById('licensesType2').value);
 
-      const { totalRevenue, profit, newPriceType1, newPriceType2 } = calculateProfit(newCostType1, newCostType2);
+      const { totalRevenue, profit, newPriceType1, newPriceType2 } = calculateProfit(
+        newCostType1, newCostType2, licensesSoldType1, licensesSoldType2
+      );
 
+      // Update displayed prices and results
       document.getElementById('priceType1Display').innerText = newPriceType1.toFixed(2);
       document.getElementById('priceType2Display').innerText = newPriceType2.toFixed(2);
       document.getElementById('totalRevenueDisplay').innerText = totalRevenue.toFixed(2);
       document.getElementById('profitDisplay').innerText = profit.toFixed(2);
 
+      // Update chart data
       chart.data.datasets[0].data = [totalRevenue, profit];
       chart.update();
     }
 
-    // Initial chart creation
-    const { totalRevenue, profit } = calculateProfit(72.12, 33.66);
+    // Initial chart setup
+    const { totalRevenue, profit } = calculateProfit(72.12, 33.66, 630, 91);
     createChart(totalRevenue, profit);
   </script>
 </body>

@@ -8,10 +8,10 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       margin: 0;
       background-color: #f5f5f5;
     }
@@ -21,6 +21,7 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
       max-width: 450px;
       text-align: center;
     }
@@ -95,7 +96,6 @@
   </div>
 
   <script>
-    // Initial data
     const initialData = {
       initialPriceType1: 104.43,
       initialPriceType2: 48.73,
@@ -103,7 +103,6 @@
       initialCostType2: 33.66
     };
 
-    // Function to calculate new prices, revenue, and profit
     function calculateProfit(newCostType1, newCostType2, licensesSoldType1, licensesSoldType2) {
       const newPriceType1 = initialData.initialPriceType1 * (newCostType1 / initialData.initialCostType1);
       const newPriceType2 = initialData.initialPriceType2 * (newCostType2 / initialData.initialCostType2);
@@ -118,7 +117,6 @@
       return { totalRevenue, profit, newPriceType1, newPriceType2 };
     }
 
-    // Create the initial chart
     const ctx = document.getElementById('revenueProfitChart').getContext('2d');
     let chart;
 
@@ -130,7 +128,7 @@
           datasets: [{
             label: 'Amount in USD',
             data: [revenue, profit],
-            backgroundColor: ['#4A90E2', '#0074D9'] // Two shades of blue
+            backgroundColor: ['#4A90E2', '#0074D9']
           }]
         },
         options: {
@@ -139,12 +137,11 @@
               beginAtZero: true
             }
           },
-          barPercentage: 0.3 // Thinner columns
+          barPercentage: 0.3
         }
       });
     }
 
-    // Update chart and displayed results
     function updateChart() {
       const newCostType1 = parseFloat(document.getElementById('costType1').value);
       const newCostType2 = parseFloat(document.getElementById('costType2').value);
@@ -164,7 +161,6 @@
       chart.update();
     }
 
-    // Initial chart setup
     const { totalRevenue, profit } = calculateProfit(72.12, 33.66, 630, 91);
     createChart(totalRevenue, profit);
   </script>

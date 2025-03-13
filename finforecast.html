@@ -23,22 +23,28 @@
     const initialData = {
       licensesSoldType1: 630,
       licensesSoldType2: 91,
-      initialPriceType1: 104.43,
-      initialPriceType2: 48.73,
-      initialCostType1: 72.12,
-      initialCostType2: 33.66
+      initialPriceType1: 104.43,  // Sale price in EUR
+      initialPriceType2: 48.73,   // Sale price in EUR
+      initialCostType1: 75,       // Cost in USD
+      initialCostType2: 35,       // Cost in USD
     };
 
+    const exchangeRate = 0.9; // 1 USD = 0.9 EUR (example rate)
+
     function calculateProfit(newCostType1, newCostType2) {
+      // Convert the cost from USD to EUR
+      const newCostType1EUR = newCostType1 * exchangeRate;
+      const newCostType2EUR = newCostType2 * exchangeRate;
+
       // Calculate the price based on the new cost relative to the initial cost
-      const newPriceType1 = initialData.initialPriceType1 * (newCostType1 / initialData.initialCostType1);
-      const newPriceType2 = initialData.initialPriceType2 * (newCostType2 / initialData.initialCostType2);
+      const newPriceType1 = initialData.initialPriceType1 * (newCostType1EUR / (initialData.initialCostType1 * exchangeRate));
+      const newPriceType2 = initialData.initialPriceType2 * (newCostType2EUR / (initialData.initialCostType2 * exchangeRate));
 
       const revenueType1 = initialData.licensesSoldType1 * newPriceType1;
       const revenueType2 = initialData.licensesSoldType2 * newPriceType2;
       const totalRevenue = revenueType1 + revenueType2;
 
-      const totalCost = (initialData.licensesSoldType1 * newCostType1) + (initialData.licensesSoldType2 * newCostType2);
+      const totalCost = (initialData.licensesSoldType1 * newCostType1EUR) + (initialData.licensesSoldType2 * newCostType2EUR);
       const profit = totalRevenue - totalCost;
 
       return { totalRevenue, profit, newPriceType1, newPriceType2 };
@@ -53,7 +59,7 @@
         data: {
           labels: ['Total Revenue', 'Profit'],
           datasets: [{
-            label: 'Amount in USD',
+            label: 'Amount in EUR',
             data: [revenue, profit],
             backgroundColor: ['#4CAF50', '#FF9800']
           }]
@@ -82,7 +88,7 @@
     }
 
     // Initial chart creation
-    const { totalRevenue, profit } = calculateProfit(72.12, 33.66);
+    const { totalRevenue, profit } = calculateProfit(75, 35);
     createChart(totalRevenue, profit);
   </script>
 

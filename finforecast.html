@@ -19,35 +19,29 @@
 
   <canvas id="revenueProfitChart" width="400" height="200"></canvas>
 
-  <h3>Updated License Prices</h3>
-  <p>Price (Type 1): <span id="priceType1Display">104.43</span></p>
-  <p>Price (Type 2): <span id="priceType2Display">48.73</span></p>
-
   <script>
     const initialData = {
       licensesSoldType1: 630,
       licensesSoldType2: 91,
-      initialPriceType1: 104.43,  // Hardcoded price
-      initialPriceType2: 48.73,   // Hardcoded price
-      initialCostType1: 75,       
-      initialCostType2: 35,       
+      initialPriceType1: 104.43,  // Fixed Sale price in EUR
+      initialPriceType2: 48.73,   // Fixed Sale price in EUR
+      initialCostType1: 75,       // Cost in USD
+      initialCostType2: 35,       // Cost in USD
     };
 
-    const exchangeRate = 0.9; // 1 USD = 0.9 EUR
+    const exchangeRate = 0.9; // 1 USD = 0.9 EUR (example rate)
 
     function calculateProfit(newCostType1, newCostType2) {
       // Convert cost from USD to EUR
       const newCostType1EUR = newCostType1 * exchangeRate;
       const newCostType2EUR = newCostType2 * exchangeRate;
 
-      // Price remains hardcoded
-      const newPriceType1 = initialData.initialPriceType1;
-      const newPriceType2 = initialData.initialPriceType2;
-
-      const revenueType1 = initialData.licensesSoldType1 * newPriceType1;
-      const revenueType2 = initialData.licensesSoldType2 * newPriceType2;
+      // Keep prices fixed (no recalculations)
+      const revenueType1 = initialData.licensesSoldType1 * initialData.initialPriceType1;
+      const revenueType2 = initialData.licensesSoldType2 * initialData.initialPriceType2;
       const totalRevenue = revenueType1 + revenueType2;
 
+      // Calculate total cost & profit
       const totalCost = (initialData.licensesSoldType1 * newCostType1EUR) + (initialData.licensesSoldType2 * newCostType2EUR);
       const profit = totalRevenue - totalCost;
 
@@ -84,6 +78,11 @@
 
       const { totalRevenue, profit } = calculateProfit(newCostType1, newCostType2);
 
+      // Ensure the displayed prices stay fixed
+      document.getElementById('priceType1Display').innerText = initialData.initialPriceType1.toFixed(2);
+      document.getElementById('priceType2Display').innerText = initialData.initialPriceType2.toFixed(2);
+
+      // Update chart values
       chart.data.datasets[0].data = [totalRevenue, profit];
       chart.update();
     }
@@ -92,5 +91,9 @@
     const { totalRevenue, profit } = calculateProfit(75, 35);
     createChart(totalRevenue, profit);
   </script>
+
+  <h3>Fixed License Prices</h3>
+  <p>Price (Type 1): <span id="priceType1Display">104.43</span></p>
+  <p>Price (Type 2): <span id="priceType2Display">48.73</span></p>
 </body>
 </html>

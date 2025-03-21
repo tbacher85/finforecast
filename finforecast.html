@@ -19,14 +19,18 @@
 
   <canvas id="revenueProfitChart" width="400" height="200"></canvas>
 
+  <h3>Fixed License Prices</h3>
+  <p>Price (Type 1): <span id="priceType1Display">104.43</span></p>
+  <p>Price (Type 2): <span id="priceType2Display">48.73</span></p>
+
   <script>
     const initialData = {
       licensesSoldType1: 630,
       licensesSoldType2: 91,
-      initialPriceType1: 104.43,  // Fixed Sale price in EUR
-      initialPriceType2: 48.73,   // Fixed Sale price in EUR
-      initialCostType1: 75,       // Cost in USD
-      initialCostType2: 35,       // Cost in USD
+      fixedPriceType1: 104.43,  // FIXED Price in EUR
+      fixedPriceType2: 48.73,   // FIXED Price in EUR
+      initialCostType1: 75,      // Initial Cost in USD
+      initialCostType2: 35,      // Initial Cost in USD
     };
 
     const exchangeRate = 0.9; // 1 USD = 0.9 EUR
@@ -35,9 +39,9 @@
       const newCostType1EUR = newCostType1 * exchangeRate;
       const newCostType2EUR = newCostType2 * exchangeRate;
 
-      // Keep prices FIXED
-      const priceType1 = initialData.initialPriceType1;
-      const priceType2 = initialData.initialPriceType2;
+      // Prices stay FIXED
+      const priceType1 = initialData.fixedPriceType1;
+      const priceType2 = initialData.fixedPriceType2;
 
       const revenueType1 = initialData.licensesSoldType1 * priceType1;
       const revenueType2 = initialData.licensesSoldType2 * priceType2;
@@ -79,9 +83,9 @@
 
       const { totalRevenue, profit } = calculateProfit(newCostType1, newCostType2);
 
-      // Display fixed prices
-      document.getElementById('priceType1Display').innerText = initialData.initialPriceType1.toFixed(2);
-      document.getElementById('priceType2Display').innerText = initialData.initialPriceType2.toFixed(2);
+      // Prices MUST remain fixed
+      document.getElementById('priceType1Display').innerText = initialData.fixedPriceType1.toFixed(2);
+      document.getElementById('priceType2Display').innerText = initialData.fixedPriceType2.toFixed(2);
 
       // Update chart values
       chart.data.datasets[0].data = [totalRevenue, profit];
@@ -92,9 +96,5 @@
     const { totalRevenue, profit } = calculateProfit(75, 35);
     createChart(totalRevenue, profit);
   </script>
-
-  <h3>Fixed License Prices</h3>
-  <p>Price (Type 1): <span id="priceType1Display">104.43</span></p>
-  <p>Price (Type 2): <span id="priceType2Display">48.73</span></p>
 </body>
 </html>

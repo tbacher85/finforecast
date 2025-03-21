@@ -39,9 +39,12 @@
       const newCostType1EUR = newCostType1 * exchangeRate;
       const newCostType2EUR = newCostType2 * exchangeRate;
 
-      // Prices stay FIXED
+      // 🚨 Ensuring prices stay constant 🚨
       const priceType1 = initialData.fixedPriceType1;
       const priceType2 = initialData.fixedPriceType2;
+
+      console.log("🔎 DEBUG: priceType1 =", priceType1);
+      console.log("🔎 DEBUG: priceType2 =", priceType2);
 
       const revenueType1 = initialData.licensesSoldType1 * priceType1;
       const revenueType2 = initialData.licensesSoldType2 * priceType2;
@@ -83,11 +86,17 @@
 
       const { totalRevenue, profit } = calculateProfit(newCostType1, newCostType2);
 
-      // Prices MUST remain fixed
+      // 🚨 Make sure price stays fixed 🚨
       document.getElementById('priceType1Display').innerText = initialData.fixedPriceType1.toFixed(2);
       document.getElementById('priceType2Display').innerText = initialData.fixedPriceType2.toFixed(2);
 
-      // Update chart values
+      console.log("📌 Prices should be fixed:");
+      console.log("Price Type 1:", document.getElementById('priceType1Display').innerText);
+      console.log("Price Type 2:", document.getElementById('priceType2Display').innerText);
+
+      console.log("💰 New Revenue:", totalRevenue);
+      console.log("📈 New Profit:", profit);
+
       chart.data.datasets[0].data = [totalRevenue, profit];
       chart.update();
     }

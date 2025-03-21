@@ -29,19 +29,20 @@
       initialCostType2: 35,       // Cost in USD
     };
 
-    const exchangeRate = 0.9; // 1 USD = 0.9 EUR (example rate)
+    const exchangeRate = 0.9; // 1 USD = 0.9 EUR
 
     function calculateProfit(newCostType1, newCostType2) {
-      // Convert cost from USD to EUR
       const newCostType1EUR = newCostType1 * exchangeRate;
       const newCostType2EUR = newCostType2 * exchangeRate;
 
-      // Keep prices fixed (no recalculations)
-      const revenueType1 = initialData.licensesSoldType1 * initialData.initialPriceType1;
-      const revenueType2 = initialData.licensesSoldType2 * initialData.initialPriceType2;
+      // Keep prices FIXED
+      const priceType1 = initialData.initialPriceType1;
+      const priceType2 = initialData.initialPriceType2;
+
+      const revenueType1 = initialData.licensesSoldType1 * priceType1;
+      const revenueType2 = initialData.licensesSoldType2 * priceType2;
       const totalRevenue = revenueType1 + revenueType2;
 
-      // Calculate total cost & profit
       const totalCost = (initialData.licensesSoldType1 * newCostType1EUR) + (initialData.licensesSoldType2 * newCostType2EUR);
       const profit = totalRevenue - totalCost;
 
@@ -78,7 +79,7 @@
 
       const { totalRevenue, profit } = calculateProfit(newCostType1, newCostType2);
 
-      // Ensure the displayed prices stay fixed
+      // Display fixed prices
       document.getElementById('priceType1Display').innerText = initialData.initialPriceType1.toFixed(2);
       document.getElementById('priceType2Display').innerText = initialData.initialPriceType2.toFixed(2);
 
